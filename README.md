@@ -1,1 +1,0 @@
-# girls-on-the-go-uk
