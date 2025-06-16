@@ -1,8 +1,6 @@
 import { Link } from 'expo-router';
 import {
-  FlatList,
   Image,
-  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,12 +8,9 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-import { useCartStore } from '../store/cart-store';
 import { supabase } from '../lib/supabase';
 
 export const ListHeader = () => {
-  const { getItemCount } = useCartStore();
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
@@ -33,24 +28,6 @@ export const ListHeader = () => {
           </View>
         </View>
         <View style={styles.headerRight}>
-          <Link style={styles.cartContainer} href='/cart' asChild>
-            <Pressable>
-              {({ pressed }) => (
-                <View>
-                  <FontAwesome
-                    name='shopping-cart'
-                    size={25}
-                    color='gray'
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-
-                  <View style={styles.badgeContainer}>
-                    <Text style={styles.badgeText}>{getItemCount()}</Text>
-                  </View>
-                </View>
-              )}
-            </Pressable>
-          </Link>
           <TouchableOpacity
             onPress={handleSignOut}
             style={styles.signOutButton}
@@ -100,9 +77,6 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 16,
   },
-  cartContainer: {
-    padding: 10,
-  },
   signOutButton: {
     padding: 10,
   },
@@ -115,21 +89,5 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
     borderRadius: 20,
-  },
-  badgeContainer: {
-    position: 'absolute',
-    top: -5,
-    right: 10,
-    backgroundColor: '#1BC464',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
   },
 });
