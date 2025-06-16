@@ -12,13 +12,8 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { useCartStore } from '../store/cart-store';
 import { supabase } from '../lib/supabase';
-import { Tables } from '../types/database.types';
 
-export const ListHeader = ({
-  categories,
-}: {
-  categories: Tables<'category'>[];
-}) => {
+export const ListHeader = () => {
   const { getItemCount } = useCartStore();
 
   const handleSignOut = async () => {
@@ -68,26 +63,6 @@ export const ListHeader = ({
         <Image
           source={require('../../assets/images/hero.png')}
           style={styles.heroImage}
-        />
-      </View>
-      <View style={styles.categoriesContainer}>
-        <Text style={styles.sectionTitle}>Categories</Text>
-        <FlatList
-          data={categories}
-          renderItem={({ item }) => (
-            <Link asChild href={`/categories/${item.slug}`}>
-              <Pressable style={styles.category}>
-                <Image
-                  source={{ uri: item.imageUrl }}
-                  style={styles.categoryImage}
-                />
-                <Text style={styles.categoryText}>{item.name}</Text>
-              </Pressable>
-            </Link>
-          )}
-          keyExtractor={item => item.name}
-          horizontal
-          showsHorizontalScrollIndicator={false}
         />
       </View>
     </View>
@@ -141,24 +116,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 20,
   },
-  categoriesContainer: {},
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  category: {
-    width: 100,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  categoryImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginBottom: 8,
-  },
-  categoryText: {},
   badgeContainer: {
     position: 'absolute',
     top: -5,
