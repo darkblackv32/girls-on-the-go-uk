@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '../providers/auth-provider';
 
 const { width, height } = Dimensions.get('window');
 const isSmallDevice = width < 375;
@@ -21,6 +22,14 @@ const isMediumDevice = width >= 375 && width < 414;
 
 export default function Landing() {
   const router = useRouter();
+  const { session } = useAuth();
+
+  useEffect(() => {
+    if (session) {
+      router.replace('/main');
+    }
+  }, [session, router]);
+
   const handleGetStarted = useCallback(() => {
     router.push('/signup');
   }, [router]);
@@ -34,6 +43,11 @@ export default function Landing() {
     isSmallDevice && styles.logoSmall,
     isMediumDevice && styles.logoMedium
   ], [isSmallDevice, isMediumDevice]);
+
+  // Si hay una sesión activa, no renderizamos nada mientras se redirige
+  if (session) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>

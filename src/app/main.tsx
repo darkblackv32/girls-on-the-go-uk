@@ -10,8 +10,9 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { supabase } from '../lib/supabase';
 
 const { width } = Dimensions.get('window');
 
@@ -26,12 +27,19 @@ const COLORS = {
 };
 
 export default function Main() {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.replace('/');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen 
         options={{
           headerShown: true,
-          title: 'Girls on the Go',
+          headerTitle: () => null,
           headerStyle: {
             backgroundColor: COLORS.background,
           },
@@ -44,6 +52,24 @@ export default function Main() {
               <TouchableOpacity style={styles.headerIcon}>
                 <Ionicons name="notifications" size={24} color={COLORS.primary} />
               </TouchableOpacity>
+              <TouchableOpacity style={styles.headerIcon}>
+                <Ionicons name="chatbubble-ellipses" size={24} color={COLORS.primary} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.headerIcon}
+                onPress={handleSignOut}
+              >
+                <Ionicons name="log-out" size={24} color={COLORS.primary} />
+              </TouchableOpacity>
+            </View>
+          ),
+          headerLeft: () => (
+            <View style={styles.headerLeft}>
+              <Image 
+                source={require('../../assets/images/gotg-logo.png')}
+                style={styles.headerLogo}
+                resizeMode="contain"
+              />
             </View>
           ),
         }}
@@ -147,12 +173,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
+  headerTitleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerLogo: {
+    width: 210,
+    height: 65,
+  },
   headerRight: {
     flexDirection: 'row',
     marginRight: 10,
+    alignItems: 'center',
+  },
+  headerLeft: {
+    flex: 1,
+    alignItems: 'flex-start',
+    marginLeft: -55,
   },
   headerIcon: {
     marginLeft: 15,
+    padding: 5,
   },
   scrollView: {
     flex: 1,
@@ -161,6 +203,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
+    backgroundColor: COLORS.background,
   },
   storyItem: {
     alignItems: 'center',
@@ -191,9 +234,10 @@ const styles = StyleSheet.create({
   createPostContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
+    backgroundColor: COLORS.background,
   },
   profileImage: {
     width: 40,
@@ -205,7 +249,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f2f5',
     borderRadius: 20,
-    padding: 10,
+    padding: 12,
   },
   createPostText: {
     color: COLORS.textSecondary,
@@ -218,7 +262,7 @@ const styles = StyleSheet.create({
   },
   postHeader: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 15,
     alignItems: 'center',
   },
   postProfileImage: {
@@ -233,14 +277,17 @@ const styles = StyleSheet.create({
   postName: {
     fontWeight: 'bold',
     color: COLORS.text,
+    fontSize: 16,
   },
   postTime: {
     color: COLORS.textSecondary,
     fontSize: 12,
   },
   postText: {
-    padding: 10,
+    padding: 15,
     color: COLORS.text,
+    fontSize: 15,
+    lineHeight: 20,
   },
   postImage: {
     width: '100%',
@@ -257,20 +304,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 8,
   },
   postActionText: {
     marginLeft: 5,
     color: COLORS.textSecondary,
+    fontSize: 14,
   },
   bottomNav: {
     flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
-    paddingVertical: 10,
     backgroundColor: COLORS.background,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   navItem: {
     flex: 1,
     alignItems: 'center',
+    paddingVertical: 5,
   },
 }); 
