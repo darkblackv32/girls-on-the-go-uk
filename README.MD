@@ -17,7 +17,7 @@ Follow these steps to set up and run the mobile application:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/darkblackv32/gotg-UK
+   git clone https://github.com/darkblackv32/girls-on-the-go-uk
    cd gotg-UK
    ```
 
