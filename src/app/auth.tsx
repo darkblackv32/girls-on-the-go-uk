@@ -39,9 +39,6 @@ type AuthFormData = zod.infer<typeof authSchema>;
 export default function Auth() {
   const { session } = useAuth();
   const router = useRouter();
-
-  if (session) return <Redirect href='/' />;
-
   const { control, handleSubmit, formState } = useForm<AuthFormData>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -120,6 +117,8 @@ export default function Auth() {
     isSmallDevice && styles.contentContainerSmall,
     isMediumDevice && styles.contentContainerMedium
   ], [isSmallDevice, isMediumDevice]);
+
+  if (session) return <Redirect href='/' />;
 
   return (
     <KeyboardAvoidingView 
