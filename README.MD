@@ -18,7 +18,7 @@ Follow these steps to set up and run the mobile application:
 
    ```bash
    git clone https://github.com/darkblackv32/girls-on-the-go-uk
-   cd gotg-UK
+   cd girls-on-the-go-uk
    ```
 
 2. **Install Dependencies:**
